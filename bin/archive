@@ -1,0 +1,41 @@
+#!/bin/sh
+#
+# $Id: $HOME/bin/archive,v 0.4.1 13.06.2015 16:37:41 mozgan Exp $
+#
+
+# === Make an archive ======================================================= #
+
+usage()
+{
+    printf "Usage: archive <archive-name> <file(s)>\n";
+
+    exit 2;
+}
+
+check()
+{
+    hash $1 2>/dev/null || { \
+        printf "'$1' is not installed. I cannot archive this file(s)!\n" && \
+        exit 1; \
+    }
+}
+
+[ $# -lt 2 ] && usage
+
+FILE="${1}"
+shift
+
+case "${FILE}" in
+    *.tar)        check "tar" && tar cvf "${FILE}" $*  ;;
+    *.tar.gz)     check "tar" && tar czvf "${FILE}" $* ;;
+    *.tar.bz2)    check "tar" && tar cjvf "${FILE}" $* ;;
+    *.tgz)        check "tar" && tar czvf "${FILE}" $* ;;
+    *.tar.xz)     check "tar" && tar cvJf "${FILE}" $* ;;
+    *.zip)        check "zip" && zip "${FILE}" $*      ;;
+    *.rar)        check "rar" && rar "${FILE}" $*      ;;
+    *.7z)         check "7z"  && 7z a -t7z -m0=lzma -mx=9 -mfb=64 -md=32m -ms=on "${FILE}" $* ;;
+    *)
+        printf "Filetype not recognized!\n" 
+        ;;
+esac
+

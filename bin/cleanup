@@ -1,0 +1,19 @@
+#!/bin/sh
+#
+# $Id: $HOME/bin/cleanup,v 0.2 13.06.2015 16:44:40 mozgan Exp $
+#
+
+# === find and delete the unneded file(s) =================================== #
+
+CLEAR_FILES="   .DS_Store \
+                Thumbs.db \
+                *~        \
+                .*~       \
+                __MACOSX  "
+
+for f in $CLEAR_FILES; do
+	find . -name "${f}" -print -exec rm -rf {} \;
+done
+
+#find . \( -name ".DS_Store" -o -name "Thumbs.db" -o -name "*~" -o -name ".*~" \) -type f -ls -delete
+

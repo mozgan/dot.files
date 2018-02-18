@@ -1,0 +1,60 @@
+#!/usr/bin/env bash
+#
+# $Id: dot.shell/bash/bash_profile,v 0.1.5 12.02.2018 00:02:05 mozgan Exp $
+#
+
+# === include other bash file(s) ===========================================# #
+# Operating System
+OS=`uname -s`
+
+# include ~/.profile
+[ -f $HOME/.profile ] && source $HOME/.profile
+
+# include ~/.bashrc
+[ $OS != "Linux" ] && [ -f $HOME/.bashrc ] && source $HOME/.bashrc
+[ "$SSH_CLIENT" != "" ] && [ $OS == "Linux" ] && [ -f $HOME/.bashrc ] && source $HOME/.bashrc
+
+# include ~/.aliases
+[ -f $HOME/.aliases ] && source $HOME/.aliases
+
+# include ~/.functions
+[ -f $HOME/.functions ] && source $HOME/.functions
+
+# include ~/.git-completion.bash
+[ -f $HOME/.git-completion.bash ] && source $HOME/.git-completion.bash
+
+# === include bash-completion file ========================================== #
+# Operating System
+OS=`uname -s`
+case $OS in
+    FreeBSD)
+        [ -f /usr/local/share/bash-completion/bash_completion ] &&	\
+            . /usr/local/share/bash-completion/bash_completion
+        ;;
+
+    NetBSD)
+        [ -r /usr/pkg/share/bash-completion/bash_completion ] && \
+            . /usr/pkg/share/bash-completion/bash_completion
+        ;;
+
+	Darwin)
+        # https://trac.macports.org/wiki/howto/bash-completion
+        if [ -f /opt/local/etc/profile.d/bash_completion.sh ]; then
+            . /opt/local/etc/profile.d/bash_completion.sh
+        fi
+        ;;
+
+    Linux)
+        if [ -f /usr/share/bash-completion/bash_completion ]; then
+            . /usr/share/bash-completion/bash_completion
+        elif [ -f /etc/bash_completion ]; then
+            . /etc/bash_completion
+        fi
+        ;;
+
+    *)
+        ;;
+esac
+
+
+

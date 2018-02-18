@@ -1,0 +1,38 @@
+#!/bin/sh
+#
+# $Id: dot.shell/functions,v 0.3.1 12.02.2018 09:41:35 mozgan Exp $
+#
+
+# === manpages with color =================================================== #
+[ "$PAGER" == "less" ] &&	\
+man()
+{
+	env \
+		LESS_TERMCAP_mb=$(printf "\e[1;31m") \
+		LESS_TERMCAP_md=$(printf "\e[1;31m") \
+		LESS_TERMCAP_me=$(printf "\e[0m") \
+		LESS_TERMCAP_se=$(printf "\e[0m") \
+		LESS_TERMCAP_so=$(printf "\e[1;44;33m") \
+		LESS_TERMCAP_ue=$(printf "\e[0m") \
+		LESS_TERMCAP_us=$(printf "\e[04;38;01;32m") \
+		man "$@"
+}
+
+# === find functions ======================================================== #
+# find the regular file(s)
+ff() { find . -type f -iname "*$1*" | grep -v ",v$"; }
+
+# find directory
+fd() { find . -type d -iname "*$1*" | grep -v "RCS"; }
+
+# find the files and directories insensitive
+fa() { find . -iname "*$1*" | grep -v ",v$" | grep -v "RCS"; }
+
+# === mkcd() ================================================================ #
+mkcd()
+{
+    [ $# != 1 ] && printf "mkcd <dirname> \n" && return;
+
+    mkdir -pv "${1}"; cd "${1}"
+}
+

@@ -1,0 +1,161 @@
+#!/usr/bin/env bash
+#
+# $Id: dot.shell/bash/bashrc,v 0.3.4 12.02.2018 00:08:02 mozgan Exp $
+#
+
+# Operating System
+OS=`uname -s`
+
+[ "$SSH_CLIENT" = "" ] && [ $OS == "Linux" ] && [ -f $HOME/.bash_profile ] && source $HOME/.bash_profile
+
+# === Check for an interactive session ====================================== #
+[ -z "$PS1" ] && return
+
+# === BASH Definitions ====================================================== # 
+
+# Add to history instead of overriding it
+shopt -s histappend
+
+# don't put duplicate lines
+# See bash(1) for more details
+#export HISTCONTROL=ignoredups:ignoreboth:erasedups
+export HISTCONTROL=ignoredups
+export HISTSIZE=5000
+export HISTFILESIZE=10000
+#export HISTIGNORE="&:[ ]*:ls:pwd:clear:exit"
+export HISTIGNORE="cd:exit:.:..:...:cd -:pwd:exit:date:* --help"
+export HISTTIMEFORMAT="%d.%m.%Y %H:%M:%S - "
+export HISTFILE="$HOME/.bash_history"
+
+# look and feel =)
+shopt -s extglob
+# include dotfiles in globs
+# (to make `mv *` include them)
+shopt -s dotglob
+# Window size sanity check
+shopt -qs checkwinsize
+shopt -qs hostcomplete
+shopt -qs no_empty_cmd_completion
+stty stop undef
+stty -echoctl
+
+# minor errors in the spelling of a directory component in a cd command 
+# will be corrected.
+shopt -s cdspell
+
+#complete -cf sudo
+complete -cf man
+
+# Bash completion
+#set show-all-if-ambiguous on
+
+# bash completion settings (actually, these are readline settings)
+#bind "set completion-ignore-case on" # note: bind used instead of sticking these in .inputrc
+bind "set bell-style none" # no bell
+bind "set show-all-if-ambiguous On" # show list automatically, without double tab
+#bind "set completion-ignore-case On"
+
+# === fortune-tipps ========================================================= #
+if [ "$SSH_CLIENT" = "" ]; then
+    # FreeBSD tipps
+    [ $OS = "FreeBSD" ] && [ -x /usr/games/fortune ] && \
+        printf "\033[0;33m `/usr/games/fortune freebsd-tips`\033[0;00m\n\n"
+    # show fortune message on Mac and on Linux
+    [ `command -v fortune` ] && printf "\033[0;33m `fortune`\033[0;00m\n"
+fi
+
+# === system_info() ================================================================ #
+system_info()
+{
+    local RESET="\033[0;37;00m"
+    local DEFAULT="\033[0m"
+    local RED="\033[0;31m"
+    local GREEN="\033[0;32m"
+    local YELLOW="\033[0;33m"
+    local BLUE="\033[0;34m"
+    local VIOLET="\033[0;35m"
+    local CYAN="\033[0;36m"
+    local WHITE="\033[0;37m"
+    printf "\n${CYAN}Hostname  :${RESET} `hostname` \n"
+    printf "${YELLOW}Localtime :${RESET} `date +%H:%M:%S\ %d.%m.%Y\ %a\ %b`\n"
+    printf "${GREEN}Uptime    :${RESET} `uptime` \n"
+    printf "${RED}Kernel    :${RESET} `uname -smr` \n"
+    [ $OS == "FreeBSD" ] || [ $OS == "OpenBSD" ] && \
+        printf "${VIOLET}Mem Info  :${RESET} `top | head -n 10 | grep Mem` \n"
+    [ $OS == "Darwin" ] &&  \
+        printf "${VIOLET}Mem Info  :${RESET} `top -l 1| head -n 10 | grep PhysMem` \n"
+    [ $OS == "Linux" ] && \
+        printf "${VIOLET}Mem Info  :${RESET} `top | head -n 10 | grep 'KiB Mem'` \n"
+
+}
+
+if [ "$SSH_CLIENT" = "" ]; then
+    [ `command -v system_info` ] && system_info && echo ""
+fi
+
+# === BASH Definitions ====================================================== # 
+
+# === BASH Prompt =========================================================== #
+
+_default_prompt()
+{
+
+	if [ -n "$SSH_CLIENT" ];
+	then
+		if [ ${EUID} == 0 ];
+		then
+			# root on ssh
+		    export PS1="[\u\[$(tput sgr0)\]\[\033[38;5;1m\]@\[$(tput sgr0)\]\[\033[38;5;15m\]\H:\w]~> \[$(tput sgr0)\]"
+	    else
+	    	# user on ssh
+            export PS1="[\u\[$(tput sgr0)\]\[\033[38;5;1m\]@\[$(tput sgr0)\]\[\033[38;5;15m\]\H:\w]-> \[$(tput sgr0)\]"
+	    fi
+	else
+		if [ ${EUID} == 0 ];
+		then
+			# root on local
+			export PS1="[\u@\h:\w]\\$ \[$(tput sgr0)\]"
+		else
+			# user on local
+			export PS1="[\u@\h:\w]\\$ \[$(tput sgr0)\]"
+	    fi
+	fi
+}
+
+bash_prompt()
+{
+    local color=false
+    local theme=false
+
+	# Change the window title of X terminals 
+	#case ${TERM} in
+	#	[aEkx]term*|rxvt*|gnome*|konsole*|interix)
+	#		PS1='\[\033]0;\u@\h:\w\007\]'
+	#		;;
+	#	screen*)
+	#		PS1='\[\033k\u@\h:\w\033\\\]'
+	#		;;
+	#	*)
+	#		unset PS1
+	#		;;
+	#esac
+
+    # source bash_color if it exists
+    [ -f $HOME/.bash_color ] && source $HOME/.bash_color && color=true
+
+    # source bash_theme if it exists
+    [ -f $HOME/.bash_theme ] && source $HOME/.bash_theme && theme=true
+
+    [ "$BASH_THEME" = "" ] && BASH_THEME="default"
+
+    if [[ $color = true && $theme = true ]]; then
+        set_prompt $OS
+    else
+    	printf "\033[0;37m[\033[0;31m INFO \033[0;37m]\033[0m default prompt will be used! \n"
+        _default_prompt
+    fi
+}
+
+bash_prompt;
+
+

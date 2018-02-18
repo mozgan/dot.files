@@ -1,0 +1,26 @@
+#!/bin/sh
+#
+# $Id: $HOME/bin/wan_ip,v 0.3 13.06.2015 17:17:29 mozgan Exp $
+#
+
+# === show my public ip ===================================================== #
+
+HOST1="http://wgetip.com"
+HOST2="http://wgetip.com"
+HOST3="ifconfig.me"
+
+printf "\n"
+printf "My WAN-IP: "
+
+if [ `command -v curl` ];
+then
+	curl $HOST2
+elif [ `command -v wget` ];
+then
+	wget -q -O - $HOST1
+else
+	echo "Cannot get your WAN-IP !!"
+fi
+
+printf "\n"
+

@@ -1,0 +1,289 @@
+#!/bin/sh
+#
+# $Id: dot.shell/aliases,v 0.6.2 12.02.2018 09:15:23 mozgan Exp $
+#
+
+# =========================================================================== #
+#        CD 
+# =========================================================================== #
+alias cd..='cd ..'
+alias ..='cd ..'
+alias ...='cd ../..'
+
+# =========================================================================== #
+#        FILESYSTEMS
+# =========================================================================== #
+### === listing contents of directory ===================================== ###
+# Operating System
+OS=`uname -s`
+case $OS in
+    NetBSD)
+        [ `command -v gls` ] && alias ls='gls --color=always'
+        ;;
+    OpenBSD)
+        [ `command -v colorls` ] && alias ls='colorls -G'
+        ;;
+	FreeBSD)
+        # -F: Display a slash (`/') immediately after each pathname that is a directory
+        # -G: Enable colorized output
+        alias ls='ls -F -G'
+
+        # include the file flags in a long (-l) output
+        alias llo='ls -lho'
+
+        # list all with complete time information and sort they by time modified
+        alias llt='ls -ltTh'
+
+        # list all with complete time information of file creation
+        alias llu='ls -lUTh'
+
+        # alias ll="ls -h -l -D '%F %T'"
+        # alias llt="ll -tr"			## show long with time
+        # alias lls="ll -Sr"			## show long with size
+        ;;
+
+    Darwin)
+        # -F: Display a slash (`/') immediately after each pathname that is a directory
+        # -G: Enable colorized output
+        alias ls='ls -F -G'
+
+        # include the file flags in a long (-l) output
+        alias llo='ls -lhO'
+
+        # list all with complete time information and sort they by time modified
+        alias llt='ls -ltTh'
+
+        # list all with complete time information of file creation
+        alias llu='ls -lUTh'
+
+        # alias ll="ls -h -l -T -O"
+        # alias llt="ll -tr"			## show long with time
+        # alias lls="ll -Sr"			## show long with size
+        ;;
+
+    Linux)
+        # --color=auto: Enable colorized output
+        alias ls='ls --color=auto'
+
+        # list all with complete time information and sort they by time modified
+        alias llt='ls -lth --time-style=locale'
+
+        # list all with complete time information of file creation
+        alias llu='ls -lhU --time-style=locale'
+
+        # alias ll="ls -h -l"
+        # alias llt="ll -tr"			## show long with time
+        # alias lls="ll -Sr"			## show long with size
+        ;;
+
+    *)
+        ;;
+esac
+
+alias l='ls -A'		# list all entries except for . and ..
+alias la='ls -ah'	# list all with . and ..
+alias li='ls -i'	# for each file, print the file's file serial number (inode number)
+alias ll='ls -lh'	# list in long format
+alias lla='ls -lha'	# list all files in long format
+alias lm='ls -m'	# stream output format; list files across the page, separated by commas
+alias llr='ls -RF'	# recursively list subdirectories encountered
+alias lls='ls -lhS'	# list all and sort they by size
+
+alias l.="ls -d .*"	# list only hidden files 
+alias lsd='ls -lh | grep "^d"'	# Show only directories
+alias lx="ls | sed 's/^.*\\.//' | sort | uniq -c | sort -n"  # Extensions
+
+### === colorization of listing =========================================== ###
+# Hint: http://geoff.greer.fm/lscolors/
+export CLICOLOR=1
+
+### LSCOLORS='1.2.3.4.5.6.7.8.9.1011'
+
+## The order of the attributes are as follows:
+# 1.   directory
+# 2.   symbolic link
+# 3.   socket
+# 4.   pipe
+# 5.   executable
+# 6.   block special
+# 7.   character special
+# 8.   executable with setuid bit set
+# 9.   executable with setgid bit set
+# 10.  directory writable to others, with sticky bit
+# 11.  directory writable to others, without sticky bit
+
+## The color designators are as follows:
+# a     black
+# b     red
+# c     green
+# d     brown
+# e     blue
+# f     magenta
+# g     cyan
+# h     light grey
+# A     bold black, usually shows up as dark grey
+# B     bold red
+# C     bold green
+# D     bold brown, usually shows up as yellow
+# E     bold blue
+# F     bold magenta
+# G     bold cyan
+# H     bold light grey; looks like bright white
+# x     default foreground or background
+
+# The default is "exfxcxdxbxegedabagacad"
+#LSCOLORS='exfxcxdxbxegedabagacad'
+
+#				'1.2.3.4.5.6.7.8.9.1011'
+#export LSCOLORS='gxexcxdxbxhxhxDxdxFxfx'
+export LSCOLORS='gxbxfxDxCxexExGxgxhxfx'
+#export LSCOLORS='ExFxCxDxBxegedabagacad'
+
+### === beautiful tree ==================================================== ###
+[ `command -v tree` ] && alias tree="tree -F -C --dirsfirst"
+
+# if tree not installed, use `dirtree'
+alias dirtree='dirs && find . -type d | sed -e "s/[^-][^\/]*\//  |/g" -e "s/|\([^ ]\)/|-\1/"'
+
+### === make directories ================================================== ###
+# -p: no error if dir already exists
+alias mkdir='mkdir -p'
+
+### === size of folders / files =========================================== ###
+# great for finding the current "real" size of all folders/files
+alias ducks="du -k | sort -n | tail -n 200 | perl -ne 'if ( /^(\d+)\s+(.*\$)/){\$l=log(\$1+.1);\$m=int(\$l/log(1024)); printf (\"%6.1f\t%s\t%25s %s\n\",(\$1/(2**(10*\$m))),((\"K\",\"M\",\"G\",\"T\",\"P\")[\$m]),\"*\"x (1.5*\$l),\$2);}' "
+
+# old style, for comparison
+# alias ducks='du -cks * | sort -rn | while read size fname; do for unit in k M G T P E Z Y; do if [ $size -lt 1024 ]; then echo -e "${size}${unit}\t${fname}"; break; fi; size=$((size/1024)); done; done'
+
+### === find the broken links (no-way!) =================================== ###
+alias broken="find . -type l -follow"
+
+# =========================================================================== #
+#        *GREP
+# =========================================================================== #
+# grep with color
+if [ $OS != "OpenBSD" ];
+then
+    alias grep='grep -I --color=auto'
+    alias egrep='egrep -E --color=auto'
+    alias fgrep='fgrep --color=auto'
+fi
+
+[ `command -v colordiff` ] && alias diff='colordiff'
+
+# =========================================================================== #
+#        NETWORKING
+# =========================================================================== #
+# show network tcp status 
+[ `command -v netstat` ] && alias ntcp="netstat -np tcp"
+
+# show network udp status
+[ `command -v netstat` ] && alias nudp="netstat -np udp"
+
+[ `command -v nmap` ] && \
+    # v: verbose, V: Version, T5: insane
+    alias nmap="nmap -v -v -T5" && \
+    # P0: no ping, A: Aggressive scan options, osscan-limit: Limit OS detection to promising targets
+    alias nmapp="nmap -P0 -A --osscan-limit" && \
+    # print ip list on local area
+    alias localips="nmap -sP `/sbin/ifconfig | grep 'inet ' | awk '{print $2}' | sed -n 'n;p'`/24"
+
+# Stop after sending count ECHO_REQUEST with 3 packets
+alias ping='ping -c 3'
+
+# speed test
+[ `command -v curl` ] && \
+    alias speedtest='curl -o /dev/null http://speedtest.wdc01.softlayer.com/downloads/test100.zip'
+[ `command -v curl` ] && \
+    alias nettest='ping -c 5 google.at && curl http://speedtest.wdc01.softlayer.com/downloads/test100.zip -m 10 > /dev/null'
+
+# show all my local IPs (v4)
+alias ips="/sbin/ifconfig | grep 'inet ' | sed 's/^[^:]*://' | sed 's/ .*:/ \/ /'"
+
+# Listening ports
+case $OS in
+    Darwin)
+        alias openports="lsof -i | grep LISTEN"
+        ;;
+    FreeBSD)
+        alias openports="sockstat -4 -l"
+        ;;
+    Linux)
+        alias openports="netstat -nlp"
+        ;;
+esac
+
+
+# =========================================================================== #
+#        VIM
+# =========================================================================== #
+if [ `command -v vim` ]; then
+	alias vi='vim'
+
+	[ `uname -s` = "Darwin" ] &&    \
+	    alias gvim="mvim" && alias macvim="mvim"
+
+
+	[ ! -e $HOME/.vimrc ] && printf "\033[0;37m[\033[0;31m INFO \033[0;37m]\033[0m '$HOME/.vimrc' not exists!!! \n"
+
+else
+	printf "===>>> 'vim' is not installed!! <<<=== \n"
+	alias vim='vi'
+fi
+
+# =========================================================================== #
+#        OTHER
+# =========================================================================== #
+# no which, no notification more
+#alias which='type'
+
+# Reload the shell (i.e. invoke as a login shell)
+alias reload="exec $SHELL -l"
+
+# show all paths with `where'
+alias where='type -all'
+
+# show paths and manpaths as list format
+alias list_path='echo -e ${PATH//:/\\n}'
+alias list_manpath='echo -e ${MANPATH//:/\\n}'
+
+# date 
+alias now='date +"%T"'
+alias today='date +"%d.%m.%Y"'
+alias nowdate='date +"%d.%m.%Y %T"'
+
+# display free disk space as Human-readable
+alias df='df -h'
+
+# display disk usage statistics as Human-readable
+alias du='du -ch'
+
+# make invisible/visible a file
+[ `uname -s` = "Darwin" ] && \
+	alias hide="SetFile -a V" && \
+	alias show="SetFile -a v"
+
+# open Sublime Text
+[ `uname -s` = "Darwin" ] && \
+	alias subl="open -a 'Sublime Text'"
+
+# rxvt
+[ `command -v rxvt` ] && alias rxvt="rxvt -rv"
+
+# error-correcting - Vi(m) style exit
+#alias :q='exit 0'
+#alias :wq='exit 0'
+#alias :q!='exit 0'
+#alias :wq!='exit 0'
+
+## System Monitoring
+[ `uname -s` = "Darwin" ] && \
+	alias cpu="top -F -R -o cpu -n 10" && \
+	alias mem="top -F -R -o mem -n 10"
+
+[ `uname -s` = "FreeBSD" ] && \
+	alias cpu="top -o cpu" && \
+	alias mem="top -o size"
+
+

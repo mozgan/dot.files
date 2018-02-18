@@ -1,0 +1,27 @@
+#!/bin/sh
+#
+# $Id: $HOME/bin/encryption,v 0.4 13.06.2015 16:59:37 mozgan Exp $
+#
+
+# === encryption ============================================================ #
+
+usage()
+{
+    printf "Usage: encryption <input-file> [output-file] \n";
+
+    exit 2;
+}
+
+[ $# -eq 0 ] && usage
+[ $# -ge 3 ] && usage
+
+[ ! -e "${1}" ] && printf "${1} not found! \n" && exit 1;
+
+if [ $# -eq 1 ]; then
+    OUTPUT_FILE="${1}.enc"
+else
+    OUTPUT_FILE="${2}"
+fi
+
+openssl bf-cbc -salt -in "${1}" -out "${OUTPUT_FILE}"
+

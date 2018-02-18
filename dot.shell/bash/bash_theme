@@ -1,0 +1,168 @@
+#!/usr/bin/env bash
+#
+# $Id: dot.shell/bash/bash_theme,v 0.5.1 12.02.2018 09:44:57 mozgan Exp $
+#
+
+# === default prompt ======================================================== #
+__parse_git_branch()
+{
+	local git_dir=`git rev-parse --git-dir 2> /dev/null | tail -n1`
+	[[ ! `echo $git_dir | grep .git` ]] && return;
+
+	local branch=$(git branch --no-color 2>/dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/')
+
+	local s1=$(git status --porcelain 2>/dev/null | grep "^??" |  wc -l | sed 's/^ *//; s/ *$//; /^$/d')
+    local s2=$(git status --porcelain 2>/dev/null | grep "M" |  wc -l | sed 's/^ *//; s/ *$//; /^$/d')
+    if [[ $s1 -eq 0 && $s2 -eq 0 ]];
+    then
+        [[ ${branch} == "master" ]] && printf "${RED}(${HI_WHITE}${branch}:#${RED})"
+        [[ ${branch} != "master" ]] && printf "${RED}(${HI_GREEN}${branch}:#${RED})"
+    else
+        local changed="$(git diff --shortstat 2> /dev/null | tail -n1 | awk '{print $1}')"
+        local insertions="$(git diff --shortstat 2> /dev/null | tail -n1 | awk '{print $4}')"
+        local deletions="$(git diff --shortstat 2> /dev/null | tail -n1 | awk '{print $6}')"
+
+        printf "${RED}(${HI_YELLOW}$branch:${HI_RED}"
+        [[ $s1 != 0 ]] && printf " ${s1}??"
+        [[ $s2 != 0 ]] && printf " ${s2}M"
+        [[ $changed != "" ]] && printf " $changed*"
+        [[ $insertions != "" ]] && printf " $insertions+"
+        [[ $deletions != "" ]] && printf " $deletions-"
+        printf "${RED})"
+    fi
+}
+
+_default()
+{
+	if [ -n "$SSH_CLIENT" ];
+	then
+		if [ ${EUID} == 0 ];
+		then
+		    PS1="\[${WHITE}\][\[${RED}\]\u\[${RED}\]@\[${CYAN}\]\H\[${WHITE}\]: \w] \$(__parse_git_branch)\n\[${DEFAULT}\]\[${RED}\]# \[${RESET}\]"
+	    else
+            PS1="\[${YELLOW}\]\u\[${RED}\]@\[${BLUE}\]\h\[${WHITE}\]:\[${RED}\]\[${WHITE}\] \w \$(__parse_git_branch)\n\[${DEFAULT}\]\[${VIOLET}\]\$ \[${RESET}\]"
+	    fi
+	else
+		if [ ${EUID} == 0 ];
+		then
+			PS1="\[${WHITE}\][\[${RED}\]\u\[${RED}\]@\[${BLUE}\]\H\[${WHITE}\]: \w] \$(__parse_git_branch)\n\[${DEFAULT}\]\[${VIOLET}\]# \[${RESET}\]"
+		else
+			PS1="\[${GREEN}\]\u\[${RED}\]@\[${CYAN}\]\h\[${WHITE}\]:\[${RED}\]\[${WHITE}\] \w \$(__parse_git_branch)\n\[${DEFAULT}\]\[${RED}\]\$ \[${RESET}\]"
+	    fi
+	fi
+}
+
+# === FreeBSD =============================================================== #
+_FreeBSD()
+{
+	# set prompt: ``[username@hostname:/directory (git status)] \n $ ''
+	if [ -n "$SSH_CLIENT" ];
+	then
+		PS1="[\[${BLUE}\]\u\[${RED}\]@\H:\[${WHITE}\]\w \$(__parse_git_branch)\[${WHITE}\]] \n"
+	else
+		PS1="[\[${GREEN}\]\u\[${RED}\]@\h:\[${WHITE}\]\w \$(__parse_git_branch)\[${WHITE}\]] \n"
+	fi
+	case `id -u` in
+		0) PS1="${PS1}\[${RED}\]# \[${DEFAULT}\]";;
+		*) PS1="${PS1}\[${RED}\]$ \[${DEFAULT}\]";;
+	esac
+}
+
+# === OpenBSD =============================================================== #
+_OpenBSD()
+{
+	# set prompt: ``[username@hostname:/directory (git status)] \n $ ''
+	if [ -n "$SSH_CLIENT" ];
+	then
+		PS1="\[${YELLOW}\]\u\[${RED}\]@\H:\[${CYAN}\]\w \$(__parse_git_branch)\[${WHITE}\] \n"
+	else
+		PS1="\[${YELLOW}\]\u\[${RED}\]@\h:\[${CYAN}\]\w \$(__parse_git_branch)\[${WHITE}\] \n"
+	fi
+	case `id -u` in
+		0) PS1="${PS1}\[${RED}\]# \[${DEFAULT}\]";;
+		*) PS1="${PS1}\[${RED}\]$ \[${DEFAULT}\]";;
+	esac
+}
+
+# === NetBSD ================================================================ #
+_NetBSD()
+{
+	# set prompt: ``[username@hostname:/directory (git status)] \n $ ''
+	if [ -n "$SSH_CLIENT" ];
+	then
+		PS1="\[${YELLOW}\]\u\[${RED}\]@\H:\[${HI_BLACK}\]\w \$(__parse_git_branch)\[${WHITE}\] \n"
+	else
+		PS1="\[${YELLOW}\]\u\[${RED}\]@\h:\[${HI_BLACK}\]\w \$(__parse_git_branch)\[${WHITE}\] \n"
+	fi
+	case `id -u` in
+		0) PS1="${PS1}\[${VIOLET}\]# \[${DEFAULT}\]";;
+		*) PS1="${PS1}\[${VIOLET}\]$ \[${DEFAULT}\]";;
+	esac
+}
+
+# === RedHat ================================================================ #
+_RedHat()
+{
+	# https://access.redhat.com/solutions/505983
+	# **PS1** - The value of this parameter is expanded and used as the primary prompt string. The default value is \u@\h \W\\$ .
+	# **PS2** - The value of this parameter is expanded as with PS1 and used as the secondary prompt string. The default is ]
+	# **PS3** - The value of this parameter is used as the prompt for the select command
+	# **PS4** - The value of this parameter is expanded as with PS1 and the value is printed before each command bash displays during an execution trace. The first character of PS4 is replicated multiple times, as necessary, to indicate multiple levels of indirection. The default is +
+
+	if [ -n "$SSH_CLIENT" ];
+	then
+		PS1="\u\[${RED}\]@\H\[${DEFAULT}\] \W \$(__parse_git_branch)\[${DEFAULT}\] \n"
+	else
+		PS1="\u\[${RED}\]@\h\[${DEFAULT}\] \W \$(__parse_git_branch)\[${DEFAULT}\] \n"
+	fi
+
+	case `id -u` in
+		0) PS1="${PS1}\[${RED}\]# \[${DEFAULT}\]";;
+		*) PS1="${PS1}\[${GREEN}\]$ \[${DEFAULT}\]";;
+	esac
+
+	# https://www.redhat.com/archives/redhat-list/2006-November/msg00113.html
+	#PS1="\u@\h \W\\$ "
+	#PS2="> "
+}
+
+# === Linux ================================================================= #
+_Linux()
+{
+	if [[ ${EUID} == 0 ]] ; then
+		PS1="\[\033[01;31m\]\h\[\033[01;34m\] \W \$\[\033[00m\] "
+	else
+		PS1="\[${HI_GREEN}\]\u\[${HI_RED}\]@\h\[${HI_BLUE}\]:\w \$(__parse_git_branch) \n\$\[${DEFAULT}\] "
+	fi
+}
+
+# === Arch ================================================================== #
+_Arch()
+{
+	# If not running interactively, don't do anything
+	[[ $- != *i* ]] && return
+
+	PS1='[\u@\h \W]\$ '
+	PS2='> '
+	PS3='> '
+	PS4='+ '
+
+	case ${TERM} in
+		xterm*|rxvt*|Eterm|aterm|kterm|gnome*)
+			PROMPT_COMMAND=${PROMPT_COMMAND:+$PROMPT_COMMAND; }'printf "\033]0;%s@%s:%s\007" "${USER}" "${HOSTNAME%%.*}" "${PWD/#$HOME/\~}"'
+			;;
+		screen)
+			PROMPT_COMMAND=${PROMPT_COMMAND:+$PROMPT_COMMAND; }'printf "\033_%s@%s:%s\033\\" "${USER}" "${HOSTNAME%%.*}" "${PWD/#$HOME/\~}"'
+			;;
+	esac
+}
+
+# === set prompt ============================================================ #
+set_prompt()
+{
+    [ $# -eq 0 ] && _default;
+
+    [ "`type -t _${1}`" != "function" ] && _default && return;
+
+    _${1}
+}

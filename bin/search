@@ -1,0 +1,28 @@
+#!/bin/sh
+#
+# $Id: $HOME/bin/search,v 0.2 13.06.2015 17:05:06 mozgan Exp $
+#
+
+# === Search text in files ================================================== #
+
+usage()
+{
+    printf "Usage: search <text> [directory]\n";
+
+    exit 2;
+}
+
+[ $# = 0 ] && usage
+
+if [ $# = 2 ]; then
+    DIR="${2}";
+else
+    DIR=.
+fi
+
+if [ `uname -s` != "OpenBSD" ];
+then
+	egrep --color=auto -r -n "${1}" ${DIR}
+else
+	egrep -r -n "${1}" ${DIR}
+fi

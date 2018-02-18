@@ -1,0 +1,90 @@
+#!/bin/sh
+#
+# $Id: dot.shell/env,v 0.2.2 11.02.2018 22:50:59 mozgan Exp $
+#
+
+# Operating System
+OS=`uname -s`
+
+# === MANPATH =============================================================== #
+
+# === Add into MANPATH === #
+add_manpath()
+{
+    [ $# -eq 0 ] && return;
+
+    [ -d "${1}" ] && if [ ":$MANPATH:" != *":${1}:"* ];
+    then
+        MANPATH="${MANPATH:+"$MANPATH:"}${1}"
+    fi
+}
+
+# first unset the MATPATH and PATH environments
+unset MANPATH
+[ `command -v manpath` ] && MANPATH="`manpath`"
+
+add_manpath "$HOME/man"
+add_manpath "/opt/local/share/man"
+add_manpath "/opt/local/man"
+add_manpath "/opt/X11/share/man"
+add_manpath "/usr/X11/share/man"
+
+export MANPATH
+
+# === PATH ================================================================== #
+
+# === Add into PATH === #
+add_path()
+{
+    [ $# -eq 0 ] && return;
+
+    [ -d "${1}" ] && if [ ":$PATH:" != *":${1}:"* ];
+    then
+        PATH="${PATH:+"$PATH:"}${1}"
+    fi
+}
+
+case $OS in
+    FreeBSD|OpenBSD|NetBSD)
+        add_path "/rescue"
+        add_path "/usr/fames"
+        # NetBSD: pkgin
+        add_path "/usr/pkg/sbin"
+        add_path "/usr/pkg/bin"
+        ;;
+
+    Darwin)
+        [ -x /usr/libexec/path_helper ] && eval `/usr/libexec/path_helper -s`
+
+        add_path "/opt/local/bin"
+        add_path "/opt/local/sbin"
+
+        add_path "/opt/X11/bin"
+        add_path "/usr/X11/bin"
+        add_path "/usr/X11/libexec"
+
+        add_path "/sw/sbin"
+        add_path "/sw/bin"
+        ;;
+
+    Linux)
+        add_path "$HOME/.local/bin"
+        add_path "/usr/games"
+        ;;
+
+    *)
+        ;;
+esac
+
+# Default PATHs
+add_path "$HOME/bin"
+add_path "/bin"
+add_path "/sbin"
+add_path "/usr/bin"
+add_path "/usr/sbin"
+add_path "/usr/local/bin"
+add_path "/usr/local/sbin"
+add_path "/usr/libexec"
+
+export PATH
+

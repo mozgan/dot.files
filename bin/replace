@@ -1,0 +1,39 @@
+#!/bin/sh
+#
+# $Id: $HOME/bin/replace,v 0.3 13.06.2015 17:15:23 mozgan Exp $
+#
+
+# === Find and Replace ====================================================== #
+# Find a text and replace an other text
+
+usage()
+{
+    printf "Usage: replace <search-text> <replace-text> [directory] \n";
+
+    exit 2;
+}
+
+[ $# = 0 -o $# -ge 4 ] && usage
+
+if [ $# = 3 ]; then
+    DIR="${3}"
+else
+    DIR=.
+fi
+
+SEARCH="${1}"
+REPLACE="${2}"
+
+i=0
+
+for f in $(grep -l -R "${SEARCH}" ${DIR})
+do
+    cp "$f" "${f}".bak
+    sed -e "s/${SEARCH}/${REPLACE}/g" $f > $f.tmp
+    mv "${f}".tmp "${f}"
+
+    i=$((i+1))
+
+    printf "Modified: $f\n"
+done
+

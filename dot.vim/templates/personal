@@ -1,0 +1,20 @@
+§ =============================================================
+§  Personal Information
+§ =============================================================
+
+SetMacro( 'AUTHOR',       '_NAME' )
+SetMacro( 'AUTHORREF',    '_NICK' )
+SetMacro( 'EMAIL',        '_EMAIL' )
+SetMacro( 'ORGANIZATION', '' )
+SetMacro( 'COMPANY',      '_COMPANY' )
+SetMacro( 'COPYRIGHT',    'Copyright (c) |YEAR|, |AUTHOR|' )
+SetMacro( 'LICENSE',      'FreeBSD License' )
+
+§ =============================================================
+§  Date and Time Format
+§ =============================================================
+
+SetFormat( 'DATE', '%d.%m.%Y' )
+SetFormat( 'TIME', '%T' )
+SetFormat( 'YEAR', '%Y' )
+

@@ -1,0 +1,28 @@
+#!/bin/sh
+#
+# $Id: $HOME/bin/download,v 0.2 29.11.2017 22:24:14 mozgan Exp $
+#
+
+# === Download files ======================================================= #
+
+usage()
+{
+    printf "Usage: download <url> <extension | all>\n";
+    printf "Ex: Download URLed pdf files from the current page: \n"
+    printf "\tdownload http://aaa.com/bbb/ccc.html pdf \n";
+    printf "Ex: Download all URLed files from the current page: \n"
+    printf "\tdownload http://xyz.com/index.html all \n"
+
+    exit 2;
+}
+
+[ $# -lt 2 ] && usage
+
+URL="${1}"
+EXT="${2}"
+
+if [[ "${EXT}" == "all" ]]; then
+	wget -r -l1 -H -t1 -nd -N -np -erobots=off ${URL}
+else
+	wget -r -l1 -H -t1 -nd -N -np -A ${EXT} -erobots=off ${URL}
+fi

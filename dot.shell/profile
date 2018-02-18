@@ -1,0 +1,97 @@
+#!/bin/sh
+#
+# $Id: dot.shell/profile,v 0.5.2 11.02.2018 23:11:45 mozgan Exp $
+#
+
+# === system definitions ==================================================== #
+# Operating System
+OS=`uname -s`
+# get hostname
+HOSTNAME=`hostname -s`
+
+# === create useful dirs ==================================================== #
+# create ~/bin if it is not exists
+[ ! -e $HOME/bin ] && mkdir -p $HOME/bin
+# create ~/$USER if it is not exists
+[ ! -e $HOME/$USER ] && mkdir -p $HOME/$USER
+# create ~/man if it is not exists
+[ ! -e $HOME/man ] && mkdir -p $HOME/man
+
+# === source environment ==================================================== #
+# include ~/.env
+[ -f $HOME/.env ] && . $HOME/.env
+
+# === Localization ========================================================== #
+# https://www.ibm.com/developerworks/library/l-lpic1-107-3/index.html
+localization()
+{
+    [ $# = 0 ] && l="en_US"
+    [ $# != 0 ] && l=${1};
+    LANG="${1}";                 export LANG
+    LANGUAGE="${1}";             export LANGUAGE
+    LC_CTYPE="${1}";             export LC_CTYPE
+#    LC_NUMERIC="${1}";           export LC_NUMERIC
+#    LC_TIME="${1}";              export LC_TIME
+#    LC_COLLATE="${1}";           export LC_COLLATE
+#    LC_MONETARY="${1}";          export LC_MONETARY
+#    LC_MESSAGES="${1}";          export LC_MESSAGES
+#    LC_PAPER="${1}";             export LC_PAPER
+#    LC_NAME="${1}";              export LC_NAME
+#    LC_ADDRESS="${1}";           export LC_ADDRESS
+#    LC_TELEPHONE="${1}";         export LC_TELEPHONE
+#    LC_MEASUREMENT="${1}";       export LC_MEASUREMENT
+#    LC_IDENTIFICATION="${1}";    export LC_IDENTIFICATION
+#    LC_ALL="${1}";               export LC_ALL
+}
+#localization tr_TR.UTF-8    # Türkçe
+#localization de_DE.UTF-8   # Deutsch
+localization en_US.UTF-8   # English
+
+# === Definition ============================================================ #
+# Set TERM
+if [[ $COLORTERM = gnome-* && $TERM = xterm ]] && infocmp gnome-256color >/dev/null 2>&1; then
+	export TERM='gnome-256color';
+elif infocmp xterm-256color >/dev/null 2>&1; then
+	export TERM='xterm-256color';
+else
+	export TERM=xterm;
+fi;
+
+#TERM=xterm-256color; export TERM
+BLOCKSIZE=K; export BLOCKSIZE
+
+if [ `command -v vim` ]; 
+then # if vim exists
+	EDITOR=vim; export EDITOR
+	VISUAL=vim; export VISUAL
+else
+	EDITOR=vi; export EDITOR
+	VISUAL=vi; export VISUAL
+fi
+
+# most as PAGER (manpages with color)
+if [ `command -v most` ]; 
+then # most as PAGER
+	PAGER=most; export PAGER
+elif [ `command -v less` ]; 
+then # less as PAGER
+	PAGER=less; export PAGER
+	LESS="-I -M -R --shift 5"; export LESS
+else	# more as PAGER
+	PAGER=more; export PAGER
+fi
+#[ ! `hash vimpager 2>/dev/null` ] && PAGER=vimpager; export PAGER
+
+# file permissions: rwxr-xr-x
+umask 022
+
+# === source shrc for dash ================================================== #
+[ $SHELL = "/bin/sh" ] && [ -e $HOME/.shrc ] && . $HOME/.shrc
+
+
+# === PKG PATH for BSD ====================================================== #
+[ $OS = "OpenBSD" ] && \
+    export PKG_PATH=http://ftp.openbsd.org/pub/OpenBSD/$(uname -r)/packages/$(arch -s)/
+
+[ $OS = "NetBSD" ] && \
+    export PKG_PATH=ftp://ftp.NetBSD.org/pub/pkgsrc/packages/NetBSD/$(uname -m)/$(uname -r)/All

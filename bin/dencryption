@@ -1,0 +1,20 @@
+#!/bin/sh
+#
+# $Id: $HOME/bin/decription,v 0.2 13.06.2015 16:59:19 mozgan Exp $
+#
+
+# === dencryption =========================================================== #
+
+usage()
+{
+    printf "Usage: dencryption <input-file> <output-file> \n";
+
+    exit 2;
+}
+
+[ $# -ne 2 ] && usage
+
+[ ! -e "${1}" ] && printf "$1 not found! \n" && exit 1;
+
+openssl bf-cbc -d -salt -in "${1}" -out "${2}"
+

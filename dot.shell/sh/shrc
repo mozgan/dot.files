@@ -1,0 +1,19 @@
+#!/bin/sh
+#
+# $Id: dot.shell/sh/shrc,v 0.1 11.02.2018 23:08:18 mozgan Exp $
+#
+
+[ -f /etc/shrc ] && . /etc/shrc
+
+# === Check for an interactive session ====================================== #
+[ -z "$PS1" ] && return
+
+if [ "$PS1" ];
+then
+    PS1="`whoami`@`hostname | sed 's/\..*//'`"
+
+    case `id -u` in
+    	0) PS1="${PS1} # ";;
+		*) PS1="${PS1} $ ";;
+	esac
+fi

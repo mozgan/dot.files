@@ -1,0 +1,22 @@
+#!/bin/sh
+#
+# $Id: $HOME/bin/tabs,v 0.1 11.02.2018 12:45:41 mozgan Exp $
+#
+
+# === Convert tabs to space ================================================ #
+
+usage()
+{
+    printf "Usage: tabs <input-file>\n";
+
+    exit 2;
+}
+
+[ $# -lt 1 ] && usage
+
+IN="${1}"
+OUT="${1}.tmp"
+
+expand -t 4 ${IN} > ${OUT}
+mv ${OUT} ${IN}
+rm -f ${OUT}

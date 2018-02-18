@@ -1,0 +1,61 @@
+#!/bin/sh
+#
+# $Id: $HOME/bin/extract,v 2.1 13.06.2015 16:42:27 mozgan Exp $
+#
+
+# === Extract Compressed File(s) ============================================ #
+
+usage()
+{
+    printf "Usage: extract <archive-name>\n"
+
+    exit 2;
+}
+
+check()
+{
+    hash $1 2>/dev/null || { \
+        printf "'$1' is not installed. I cannot extract this file!\n" && \
+	    exit 1; \
+    } 
+}
+
+[ $# = 0 ] && usage 
+
+[ ! -e "${1}" ] && printf "extract -- Error: '$1' not found!\n" && exit 1;
+
+i=0
+j=$#
+
+while [ $i -lt $j ]; do
+    f="${1}"
+    i=$((i+1))
+
+    if [ -f "${f}" ]; then
+        case "${f}" in
+            *.tar.bz2)   check "tar" && tar xvjf "${f}"          ;;
+            *.tar.gz)    check "tar" && tar xvzf "${f}"          ;;
+            *.tar.xz)    check "tar" && tar xvJf "${f}"          ;;
+            *.lzma)      check "unlzma" && unlzma "${f}"         ;;
+            *.bz2)       check "bunzip2" && bunzip2 "${f}"       ;;
+            *.rar)       check "unrar" && unrar x -ad "${f}"     ;;
+            *.gz)        check "gunzip" && gunzip "${f}"         ;;
+            *.tar)       check "tar" && tar xvf "${f}"           ;;
+            *.tbz2)      check "tar" && tar xvjf "${f}"          ;;
+            *.tgz)       check "tar" && tar xvzf "${f}"          ;;
+            *.zip)       check "unzip" && unzip "${f}"           ;;
+            *.Z)         check "uncompress" && uncompress "${f}" ;;
+            *.7z)        check "7z" && 7z x "${f}"               ;;
+            *.xz)        check "unxz" && unxz "${f}"             ;;
+            *.exe)       check "cabextract" && cabextract "${f}" ;;
+            *)
+                printf "extract: '${f}' cannot be extracted!\n"
+                ;;
+        esac
+    else
+        printf "'${f}' is not a valid file!\n"
+    fi
+
+    shift
+done
+

@@ -1,0 +1,122 @@
+#
+# Ref: 
+# http://opensource.apple.com/source/Git/Git-19/src/git-htmldocs/pretty-formats.txt
+#
+
+[core]
+	excludesfile = EXCLUDESFILE
+	editor = vim
+	pager = less -FRSX
+	whitespace = fix,-indent-with-non-tab,trailing-space,cr-at-eol
+
+[merge]
+	tool = vimdiff
+	stat = true
+	conflictstyle = diff3
+
+[apply]
+        whitespace = fix
+
+[user]
+	name = _NAME
+	email = _EMAIL
+	signingkey = _SIGNATURE
+
+[pack]
+        threads = 0
+
+[diff]
+	algorithm = patience
+	tool = vimdiff
+	renames = copy
+#        renamelimit = 0
+	mnemonicprefix = true
+
+[push]
+	#default = matching
+	default = current
+
+[alias]
+	alias = "!git config -l | grep alias;"
+	
+	ba = branch -av
+	ci = commit
+	ca = commit -a
+	co = checkout
+	st = status --short --branch
+	lc = log ORIG_HEAD.. --stat --no-merges
+	ls = ls-files
+	rrb = push origin
+
+	new-branch = checkout -b
+    origin = config remote.origin.url
+    host = config remote.origin.url
+	me = config user.name
+	who = shortlog -s
+
+	# undo last commit
+	undo = reset --soft HEAD^
+
+	# interactive rebase
+	ir = !sh -c 'git rebase -i origin/${1-master}' -
+	
+# prety-format colors: 
+#git log --pretty=format:"%Credred%Creset %Cgreengreen%Creset %C(Yellow)yellow%Creset %Cblueblue%Creset %C(magenta)magenta%Creset %C(cyan)cyan%Creset %C(white)white%Creset" 
+	tree = log --graph --pretty=format:'%C(green)%h%Creset - %s%C(yellow bold)%d%Creset%n          %aD (%C(cyan)%ar %C(red)- %an%Creset)' --decorate --abbrev-commit
+	#tree = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow bold)%d%Creset %s %Cgreen(%cr) %C(cyan dim)[%cn, <%ce>]%Creset' --decorate --abbrev-commit --date=relative
+	#tree = log --graph --pretty=oneline --decorate  --abbrev-commit --date=relative
+	lol = log --pretty=oneline --abbrev-commit --graph --decorate
+	mlog = !git log --committer=\"`git me`\"
+
+	# update current branch
+	update = !sh -c 'git fetch origin && git rebase -p origin/${1-master}' -
+
+	# directory dirty?
+	dirty = !git status --porcelain -uno | wc -l
+
+	# update current branch and master
+	sync = !git update && \
+		git co master && \
+		git pull && \
+		git co @{-1} 
+
+        amend = commit --amend -C HEAD
+	lost = !"git fsck | awk '/dangling commit/ {print $3}' | git show --format='SHA1: %C(yellow)%h%Creset %f' --stdin | awk '/SHA1/ {sub(\"SHA1: \", \"\"); print}'"
+	
+[branch]
+	autosetupmerge = true
+	autosetuprebase = always
+
+[color]
+	branch = auto
+        status = auto
+        diff = auto
+	ui = auto
+	interactive = auto
+
+[color "diff"]
+        meta = yellow
+	frag = magenta
+	plain = white #bold
+        old = red #bold
+	new = green #bold
+	commit = cyan #bold
+	func = green dim
+
+[color "branch"]
+        current = yellow reverse
+        local = yellow
+        remote = green
+
+[color "status"]
+        added = yellow
+        changed = green
+	untracked = cyan
+
+[color "interactive"]
+        error = red
+	header = yellow
+
+# Fix Error: "SSL certificate problem: unable to get local issuer certificate"
+[http]
+	sslVerify = false
