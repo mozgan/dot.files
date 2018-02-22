@@ -30,18 +30,18 @@ localization()
     LANG="${1}";                 export LANG
     LANGUAGE="${1}";             export LANGUAGE
     LC_CTYPE="${1}";             export LC_CTYPE
-#    LC_NUMERIC="${1}";           export LC_NUMERIC
-#    LC_TIME="${1}";              export LC_TIME
-#    LC_COLLATE="${1}";           export LC_COLLATE
-#    LC_MONETARY="${1}";          export LC_MONETARY
-#    LC_MESSAGES="${1}";          export LC_MESSAGES
-#    LC_PAPER="${1}";             export LC_PAPER
-#    LC_NAME="${1}";              export LC_NAME
-#    LC_ADDRESS="${1}";           export LC_ADDRESS
-#    LC_TELEPHONE="${1}";         export LC_TELEPHONE
-#    LC_MEASUREMENT="${1}";       export LC_MEASUREMENT
-#    LC_IDENTIFICATION="${1}";    export LC_IDENTIFICATION
-#    LC_ALL="${1}";               export LC_ALL
+    LC_NUMERIC="${1}";           export LC_NUMERIC
+    LC_TIME="${1}";              export LC_TIME
+    LC_COLLATE="${1}";           export LC_COLLATE
+    LC_MONETARY="${1}";          export LC_MONETARY
+    LC_MESSAGES="${1}";          export LC_MESSAGES
+    LC_PAPER="${1}";             export LC_PAPER
+    LC_NAME="${1}";              export LC_NAME
+    LC_ADDRESS="${1}";           export LC_ADDRESS
+    LC_TELEPHONE="${1}";         export LC_TELEPHONE
+    LC_MEASUREMENT="${1}";       export LC_MEASUREMENT
+    LC_IDENTIFICATION="${1}";    export LC_IDENTIFICATION
+    LC_ALL="${1}";               export LC_ALL
 }
 #localization tr_TR.UTF-8    # Türkçe
 #localization de_DE.UTF-8   # Deutsch
