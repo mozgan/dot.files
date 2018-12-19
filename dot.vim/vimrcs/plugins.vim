@@ -287,7 +287,8 @@ let g:airline_enable_syntastic=1
 
 " airline theme
 "let g:airline_theme='papercolor'
-let g:airline_theme='powerlineish'
+"let g:airline_theme='powerlineish'
+let g:airline_theme = 'gruvbox'
 
 " }}}
 
