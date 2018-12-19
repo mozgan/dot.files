@@ -7,11 +7,14 @@
 # Operating System
 OS=`uname -s`
 
+BASH_PROFILE=true
+
 # include ~/.profile
 [ -f $HOME/.profile ] && source $HOME/.profile
 
 # include ~/.bashrc
-[ $OS != "Linux" ] && [ -f $HOME/.bashrc ] && source $HOME/.bashrc
+[ "$BASHRC" != "true" ] && [ -f $HOME/.bashrc ] && source $HOME/.bashrc
+#[ $OS != "Linux" ] && [ -f $HOME/.bashrc ] && source $HOME/.bashrc
 [ "$SSH_CLIENT" != "" ] && [ $OS == "Linux" ] && [ -f $HOME/.bashrc ] && source $HOME/.bashrc
 
 # include ~/.aliases

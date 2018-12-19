@@ -6,6 +6,9 @@
 # Operating System
 OS=`uname -s`
 
+BASHRC=true
+
+[ "$BASH_PROFILE" != "true" ] && [ -f $HOME/.bash_profile ] && source $HOME/.bash_profile
 [ "$SSH_CLIENT" = "" ] && [ $OS == "Linux" ] && [ -f $HOME/.bash_profile ] && source $HOME/.bash_profile
 
 # === Check for an interactive session ====================================== #
