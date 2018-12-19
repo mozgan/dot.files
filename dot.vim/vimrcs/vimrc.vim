@@ -816,7 +816,8 @@ syntax enable   " on, but don't load the personal syntax rules
 if has("gui_running")
     set t_Co=256
     try
-        colorscheme solarized
+        colorscheme gruvbox
+        "colorscheme solarized
         "colorscheme papercolor
         "colorscheme tender
         "colorscheme desertink
@@ -827,7 +828,8 @@ if has("gui_running")
 else
     set t_Co=256
     try
-        colorscheme risto
+        "colorscheme risto
+        colorscheme gruvbox
     catch
         ":echo "default colorscheme will be used!"
         colorscheme koehler

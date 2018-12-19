@@ -29,6 +29,7 @@ Plugin 'VundleVim/Vundle.vim'
 
 """ Colors """
 Plugin 'altercation/vim-colors-solarized'
+Plugin 'morhetz/gruvbox'
 Plugin 'vim-scripts/molokai'
 Plugin 'NLKNguyen/papercolor-theme'
 
