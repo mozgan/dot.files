@@ -144,9 +144,9 @@ set rulerformat=%30(%=\:b%n%y%m%r%w\ %l,%c%V\ %P%)
 " (some terminals have no support!)
 if &term =~ "xterm"
     " xterm title
-    if has('title')
-        set title       " show the filename on windows
-    endif
+"    if has('title')
+"        set title       " show the filename on windows
+"    endif
 
     " bar cursor shape
     if exists('&t_SI')
