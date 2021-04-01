@@ -65,6 +65,7 @@ Plugin 'mhinz/vim-signify'
 " Programming Plugins
 "Plugin 'WolfgangMehner/vim-plugins'
 Plugin 'WolfgangMehner/c-support'
+Plugin 'WolfgangMehner/python-support'
 Plugin 'WolfgangMehner/bash-support'
 Plugin 'WolfgangMehner/latex-support'
 Plugin 'WolfgangMehner/matlab-support'
