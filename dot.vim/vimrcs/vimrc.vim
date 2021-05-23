@@ -1384,7 +1384,7 @@ set guicursor=n-v-c:block,o:hor50,i-ci:hor15,r-cr:hor30,sm:block
 " GUI: Use "System Clipboard" for unnamed registers
 "   unnamed     = "Unnamed Register" -> "System Clipboard"
 "   autoselect  = "Visual Mode Selection" -> "System Clipboard"
-"set clipboard=
+set clipboard=unnamed
 
 " GUI: The contents of this option controls various toolbar settings. The
 " possible values are:
