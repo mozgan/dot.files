@@ -89,7 +89,7 @@ system_info()
     [ $OS == "Darwin" ] &&  \
         printf "${VIOLET}Mem Info  :${RESET} `top -l 1| head -n 10 | grep PhysMem` \n"
     [ $OS == "Linux" ] && \
-        printf "${VIOLET}Mem Info  :${RESET} `top | head -n 10 | grep 'KiB Mem'` \n"
+        printf "${VIOLET}Mem Info  :${RESET} `top | head -n 10 | grep 'MiB Mem'` \n"
 
 }
 
