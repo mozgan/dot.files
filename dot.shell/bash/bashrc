@@ -1,12 +1,13 @@
 #!/usr/bin/env bash
 #
-# $Id: dot.shell/bash/bashrc,v 0.3.4 12.02.2018 00:08:02 mozgan Exp $
+# $Id: dot.shell/bash/bashrc,v 0.3.5 09.07.2021 19:55:14 mozgan Exp $
 #
+
+[ "$BASHRC" == "true" ] && return;
+BASHRC=true
 
 # Operating System
 OS=`uname -s`
-
-BASHRC=true
 
 [ "$BASH_PROFILE" != "true" ] && [ -f $HOME/.bash_profile ] && source $HOME/.bash_profile
 [ "$SSH_CLIENT" = "" ] && [ $OS == "Linux" ] && [ -f $HOME/.bash_profile ] && source $HOME/.bash_profile

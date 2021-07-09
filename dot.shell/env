@@ -1,7 +1,10 @@
 #!/bin/sh
 #
-# $Id: dot.shell/env,v 0.2.2 11.02.2018 22:50:59 mozgan Exp $
+# $Id: dot.shell/env,v 0.2.3 09.07.2021 19:55:14 mozgan Exp $
 #
+
+[ "$ENV" == "true" ] && return;
+ENV=true
 
 # Operating System
 OS=`uname -s`

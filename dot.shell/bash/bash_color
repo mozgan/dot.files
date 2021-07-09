@@ -1,9 +1,12 @@
 #!/usr/bin/env bash
 #
-# $Id: dot.shell/bash/bash_color,v 0.2 12.02.2018 09:32:51 mozgan Exp $
+# $Id: dot.shell/bash/bash_color,v 0.2.1 09.07.2021 19:55:14 mozgan Exp $
 #
 
 # vim:filetype=sh:tabstop=4:shiftwidth=4:fdm=marker:
+
+[ "$BASH_COLOR" == "true" ] && return;
+BASH_COLOR=true
 
 # === Regular, Bold, Underline ============================================== #
 REGULAR=0

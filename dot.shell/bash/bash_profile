@@ -1,13 +1,14 @@
 #!/usr/bin/env bash
 #
-# $Id: dot.shell/bash/bash_profile,v 0.1.5 12.02.2018 00:02:05 mozgan Exp $
+# $Id: dot.shell/bash/bash_profile,v 0.1.6 09.07.2021 19:55:14 mozgan Exp $
 #
+
+[ "$BASH_PROFILE" == "true" ] && return;
+BASH_PROFILE=true
 
 # === include other bash file(s) ===========================================# #
 # Operating System
 OS=`uname -s`
-
-BASH_PROFILE=true
 
 # include ~/.profile
 [ -f $HOME/.profile ] && source $HOME/.profile

@@ -1,7 +1,10 @@
 #!/bin/sh
 #
-# $Id: dot.shell/profile,v 0.5.2 11.02.2018 23:11:45 mozgan Exp $
+# $Id: dot.shell/profile,v 0.5.3 09.07.2021 19:52:05 mozgan Exp $
 #
+
+[ "$PROFILE" == "true" ] && return;
+PROFILE=true
 
 # === system definitions ==================================================== #
 # Operating System

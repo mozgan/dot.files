@@ -1,7 +1,10 @@
 #!/usr/bin/env bash
 #
-# $Id: dot.shell/bash/bash_theme,v 0.5.1 12.02.2018 09:44:57 mozgan Exp $
+# $Id: dot.shell/bash/bash_theme,v 0.5.2 09.07.2021 19:55:14 mozgan Exp $
 #
+
+[ "$BASH_THEME" == "true" ] && return;
+BASH_THEME=true
 
 # === default prompt ======================================================== #
 __parse_git_branch()

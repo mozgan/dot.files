@@ -1,7 +1,10 @@
 #!/bin/sh
 #
-# $Id: dot.shell/aliases,v 0.6.2 12.02.2018 09:15:23 mozgan Exp $
+# $Id: dot.shell/aliases,v 0.6.3 09.07.2021 19:55:14 mozgan Exp $
 #
+
+[ "$ALIASES" == "true" ] && return;
+ALIASES=true
 
 # =========================================================================== #
 #        CD 
