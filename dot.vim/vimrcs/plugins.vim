@@ -2,7 +2,7 @@
 "                           Plugins
 "
 "
-" $Id: dot.vim/vimrcs/plugins.vim,v 0.8 17.02.2018 20:28:44 mozgan Exp $
+" $Id: dot.vim/vimrcs/plugins.vim,v 0.8.1 09.07.2021 21:27:47 mozgan Exp $
 "------------------------------------------------------------------------------
 
 "------------------------------------------------------------------------------
@@ -363,6 +363,10 @@ let g:Tex_ViewRule_pdf = 'evince'
 let g:DoxygenToolkit_authorName="M. Ozgan"
 let g:DoxygenToolkit_licenseTag="FreeBSD License"
 
+"-------------------------------------------------------
+" {{{   11) snipMate
+
+let g:snipMate = { 'snippet_version' : 1 }
 
 
 
