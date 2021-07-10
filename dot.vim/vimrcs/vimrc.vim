@@ -816,23 +816,23 @@ syntax enable   " on, but don't load the personal syntax rules
 if has("gui_running")
     set t_Co=256
     try
-        colorscheme gruvbox
+        "colorscheme gruvbox
         "colorscheme solarized
-        "colorscheme papercolor
-        "colorscheme tender
-        "colorscheme desertink
+        colorscheme papercolor
     catch
         ":echo "default colorscheme will be used!"
-        colorscheme koehler
+        "colorscheme koehler
+        colorscheme papercolor
     endtry
 else
     set t_Co=256
     try
         "colorscheme risto
-        colorscheme gruvbox
+        "colorscheme gruvbox
+        colorscheme papercolor
     catch
         ":echo "default colorscheme will be used!"
-        colorscheme koehler
+        colorscheme elflord
     endtry
 endif
 

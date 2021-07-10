@@ -28,14 +28,13 @@ Plugin 'VundleVim/Vundle.vim'
 " === === === Install plugins === === === "
 
 """ Colors """
-Plugin 'altercation/vim-colors-solarized'
 Plugin 'morhetz/gruvbox'
-Plugin 'vim-scripts/molokai'
-Plugin 'NLKNguyen/papercolor-theme'
+Plugin 'tomasr/molokai'
+Plugin 'altercation/vim-colors-solarized'
 
+Plugin 'NLKNguyen/papercolor-theme'
 Plugin 'vim-scripts/Risto-Color-Scheme'
-Plugin 'jacoborus/tender.vim'
-Plugin 'toupeira/vim-desertink'
+
 
 """ Plugins """
 
