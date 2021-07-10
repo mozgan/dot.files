@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# $Id: src/func.sh,v 0.1 11.02.2018 22:20:36 mozgan Exp $
+# $Id: src/func.sh,v 0.5 10.07.2020 22:04:57 mozgan Exp $
 #
 
 # === inquire() ============================================================= #
@@ -86,6 +86,23 @@ choice()
             make_link $FUNCTIONS $FUNCTIONS_INSTALL;
             make_link $GIT_COMPLETION_BASH $GIT_COMPLETION_BASH_INSTALL;
 
+            # zsh
+            info "As default, oh-my-zsh will be used!"
+            inquire "Do you want to install oh-my-zsh?" \
+                "[${RED} Y ${DEFAULT}]es" "[${RED} N ${DEFAULT}]o"
+                [ $answer = "y" ] || [ $answer = "Y" ] || [ $answer = "yes" ] || \
+                [ $answer = "Yes" ] || [ $answer = "YES" ]
+
+            $(SHELL=/bin/sh git clone https://github.com/ohmyzsh/ohmyzsh/ $OHMYZSH_INSTALL)
+            $(SHELL=/bin/sh git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $OHMYZSH_INSTALL/plugins/zsh-syntax-highlighting)
+            $(SHELL=/bin/sh git clone https://github.com/zsh-users/zsh-autosuggestions.git $OHMYZSH_INSTALL/plugins/zsh-autosuggestions)
+            $(SHELL=/bin/sh git clone --depth=1 https://github.com/romkatv/powerlevel10k.git $OHMYZSH_INSTALL/custom/themes/powerlevel10k)
+            make_link $ZSHRC $ZSHRC_INSTALL;
+            make_link $P10K $P10K_INSTALL;
+            make_link $ENV $ENV_INSTALL;
+
+            warn "Install the recommended font from https://github.com/romkatv/powerlevel10k#meslo-nerd-font-patched-for-powerlevel10k"
+
             # Personal files
             install_personal;
 
@@ -115,8 +132,21 @@ choice()
             ;;
 
         z | Z | zsh | Zsh | ZSH)
-            # :TODO:
-            debug ":TODO: zsh"
+            info "As default, oh-my-zsh will be used!"
+            inquire "Do you want to install oh-my-zsh?" \
+                "[${RED} Y ${DEFAULT}]es" "[${RED} N ${DEFAULT}]o"
+                [ $answer = "y" ] || [ $answer = "Y" ] || [ $answer = "yes" ] || \
+                [ $answer = "Yes" ] || [ $answer = "YES" ]
+
+            $(SHELL=/bin/sh git clone https://github.com/ohmyzsh/ohmyzsh/ $OHMYZSH_INSTALL)
+            $(SHELL=/bin/sh git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $OHMYZSH_INSTALL/plugins/zsh-syntax-highlighting)
+            $(SHELL=/bin/sh git clone https://github.com/zsh-users/zsh-autosuggestions.git $OHMYZSH_INSTALL/plugins/zsh-autosuggestions)
+            $(SHELL=/bin/sh git clone --depth=1 https://github.com/romkatv/powerlevel10k.git $OHMYZSH_INSTALL/custom/themes/powerlevel10k)
+            make_link $ZSHRC $ZSHRC_INSTALL;
+            make_link $P10K $P10K_INSTALL;
+            make_link $ENV $ENV_INSTALL;
+
+            warn "Install the recommended font from https://github.com/romkatv/powerlevel10k#meslo-nerd-font-patched-for-powerlevel10k"
             ;;
 
         v | V | vim | Vim | VIM)
@@ -272,6 +302,10 @@ remove()
         [ -f $f ] && \
             $(SHELL=/bin/sh rm -f $f) && success "$f removed."
 
+        # .oh-my-zsh is a directory
+        [ -d $f ] && \
+            $(SHELL=/bin/sh rm -rf $f) && success "$f removed."
+
         shift
     done
 
@@ -337,7 +371,7 @@ install_personal()
     sed -e "s/_EMAIL/$_EMAIL/g" $VIM_PERSONAL > $VIM_PERSONAL.tmp
     mv $VIM_PERSONAL.tmp $VIM_PERSONAL
     sed -e "s/_COMPANY/$_COMPANY/g" $VIM_PERSONAL > $VIM_PERSONAL.tmp
-    cp $VIM_PERSONAL.tmp $VIM_PERSONAL
+    mv $VIM_PERSONAL.tmp $VIM_PERSONAL
     cp $VIM_PERSONAL $VIM_PERSONAL.templates
 }
 

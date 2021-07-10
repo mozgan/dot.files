@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# $Id: defs.sh,v 0.1 11.02.2018 22:17:00 mozgan Exp $
+# $Id: defs.sh,v 0.2 10.07.2021 21:55:25 mozgan Exp $
 #
 
 # === definitions =========================================================== #
@@ -28,6 +28,7 @@ BIN_DIR_INSTALL="$HOME/bin"
 SHELL_DIR="$DOT_DIR/dot.shell"
 SH_DIR="$SHELL_DIR/sh"
 BASH_DIR="$SHELL_DIR/bash"
+ZSH_DIR="$SHELL_DIR/zsh"
 COMPLETIONS="$SHELL_DIR/completions"
 
 # profile
@@ -63,6 +64,15 @@ ALIASES_INSTALL="$HOME/.aliases"
 FUNCTIONS="$SHELL_DIR/functions"
 FUNCTIONS_INSTALL="$HOME/.functions"
 
+# zshrc
+OHMYZSH_INSTALL="$HOME/.oh-my-zsh"
+ZSHRC="$ZSH_DIR/zshrc"
+ZSHRC_INSTALL="$HOME/.zshrc"
+
+# powerlevel10k
+P10K="$ZSH_DIR/p10k.zsh"
+P10K_INSTALL="$HOME/.p10k.zsh"
+
 # git completio for bash
 GIT_COMPLETION_BASH="$COMPLETIONS/git-completion.bash"
 GIT_COMPLETION_BASH_INSTALL="$HOME/.git-completion.bash"
@@ -94,6 +104,9 @@ INSTALLED=" $BIN_DIR_INSTALL				\
 			$BASH_THEME_INSTALL 			\
 			$ALIASES_INSTALL 				\
 			$FUNCTIONS_INSTALL 				\
+			$OHMYZSH_INSTALL				\
+			$ZSHRC_INSTALL					\
+			$P10K_INSTALL					\
 			$GIT_COMPLETION_BASH_INSTALL	\
 			$GITCONFIG_INSTALL				\
 			$GITIGNORE_INSTALL				\

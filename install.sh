@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# $Id: install.sh,v 0.3 11.02.2018 22:13:51 mozgan Exp $
+# $Id: install.sh,v 0.5 10.07.2021 22:05:57 mozgan Exp $
 #
 
 # =========================================================================== #
@@ -44,6 +44,10 @@ include $DOT_DIR/defs.sh
 # include source files
 include ${SRC_FILES}
 
+[ ! `command -v git` ] && fail "Please install git!" && return;
+
 backup  # ask whether the backup should be done
 menu    # show menu
 choice  # choice from menu
+
+#git stash
