@@ -818,18 +818,18 @@ if has("gui_running")
     try
         "colorscheme gruvbox
         "colorscheme solarized
-        colorscheme papercolor
+        colorscheme PaperColor
     catch
         ":echo "default colorscheme will be used!"
         "colorscheme koehler
-        colorscheme papercolor
+        colorscheme PaperColor
     endtry
 else
     set t_Co=256
     try
         "colorscheme risto
         "colorscheme gruvbox
-        colorscheme papercolor
+        colorscheme PaperColor
     catch
         ":echo "default colorscheme will be used!"
         colorscheme elflord

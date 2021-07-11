@@ -16,7 +16,7 @@ include()
 
     i=0
     j=$#
-    while [ $i -lt $j ]; 
+    while [ $i -lt $j ];
     do
         f=${1}
         i=$((i+1))
@@ -50,4 +50,5 @@ backup  # ask whether the backup should be done
 menu    # show menu
 choice  # choice from menu
 
-#git stash
+git stash
+
