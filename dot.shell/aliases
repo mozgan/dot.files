@@ -290,3 +290,6 @@ alias du='du -ch'
 	alias mem="top -o size"
 
 
+# cbuild
+[ `command -v cmake` ] && alias cbuild="cmake .. && make -j"
+
