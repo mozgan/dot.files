@@ -34,8 +34,8 @@ include()
 clear
 
 # set dot directory
-#DOT_DIR="$HOME/dot.files" && [ ! -e $DOT_DIR ] &&   \
-#    printf "dot.files should be in $HOME directory!\n" && exit 1;
+DOT_DIR="$HOME/.dot.files" && [ ! -e $DOT_DIR ] &&   \
+    printf ".dot.files should be in $HOME directory!\n" && exit 1;
 
 # include the definitions
 [ ! -e $DOT_DIR/defs.sh ] && printf "$DOT_DIR/defs.sh not found! \n" && exit 1;
