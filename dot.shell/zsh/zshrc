@@ -79,9 +79,9 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(colored-man-pages command-not-found common-aliases copybuffer docker docker-compose docker-machine extract \
-  git-extras gitfast git-prompt nmap osx python sudo vi-mode \
-  zsh-interactive-cd zsh_reload zsh-navigation-tools zsh-syntax-highlighting zsh-autosuggestions)
+plugins=(colored-man-pages command-not-found common-aliases copybuffer extract \
+  git-extras gitfast git-prompt nmap macos python sudo vi-mode \
+  zsh-interactive-cd zsh-navigation-tools zsh-syntax-highlighting zsh-autosuggestions)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -116,6 +116,8 @@ if [ -x "$(command -v colorls)" ]; then
     alias la="colorls -al"
 fi
 
+alias cbuild='cmake .. && make -j'
+
 #if [ -x "$(command -v exa)" ]; then
 #    alias ls="exa"
 #    alias la="exa --long --all --group"
@@ -123,4 +125,6 @@ fi
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
