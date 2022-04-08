@@ -89,7 +89,7 @@ system_info()
     [ $OS == "Darwin" ] &&  \
         printf "${VIOLET}Mem Info  :${RESET} `top -l 1| head -n 10 | grep PhysMem` \n"
     [ $OS == "Linux" ] && \
-        printf "${VIOLET}Mem Info  :${RESET} `top | head -n 10 | grep 'MiB Mem'` \n"
+        printf "${VIOLET}Mem Info  :${RESET} `top | head -n 10 | grep 'KiB Mem'` \n"
 
 }
 
@@ -160,6 +160,9 @@ bash_prompt()
     fi
 }
 
+export LD_LIBRARY_PATH=/usr/local/lib/
+
 bash_prompt;
 
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
