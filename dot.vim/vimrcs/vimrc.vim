@@ -346,7 +346,7 @@ set whichwrap=b,s,<,>,~,[,]
 set backspace=eol,start,indent
 
 " Function keys that start with an <Esc> are recognized in Insert mode
-set esckeys
+"set esckeys
 
 " Virtual editing means that the cursor can be positioned where
 " there is no actual character
@@ -1286,7 +1286,7 @@ endif
 
 " When this option is not empty a swap file is synced to disk after
 " writing to it.
-set swapsync=fsync
+"set swapsync=fsync
 
 " Control the behavior when switching between buffers.
 "       useopen         If included, jump to the first open window that contains
