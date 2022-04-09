@@ -10,17 +10,15 @@ snippet main
 	 * @return int (if success returns 0, otherwise returns non-zero)
 	 */
 	int
-	main(int argc, const char *argv[])
+	main(int argc, char const* argv[])
 	{
 		${0}
 
-		exit (EXIT_SUCCESS);
+		exit(EXIT_SUCCESS);
 	}
 # main(void)
 snippet mainn
-	int
-	main(void)
-	{
+	int main(void) {
 		${0}
 
 		return 0;
@@ -103,11 +101,13 @@ snippet t
 snippet switch
 	switch (${1:/* variable */}) {
 		case ${2:/* variable case */}:
-			${3}
-			${4:break;}${5}
+			break;
+
+		case ()
+			break;
+
 		default:
 			abort();  /* abort if $1 does not equal the any value of cases */
-			${6}
 	}
 # switch without default
 snippet switchndef
@@ -170,11 +170,12 @@ snippet func
 	}
 # function definition with Doxygen documentation
 snippet dfun0
-	/*! \brief ${1:Brief function description here}
+	/**
+	 * @brief ${1:Brief function description here}
 	 *
 	 *  ${2:Detailed description of the function}
 	 *
-	 * \return ${3:Return parameter description}
+	 * @return ${3:Return parameter description}
 	 */
 	${4:void} ${5:function_name}()
 	{
@@ -188,12 +189,13 @@ snippet fun1
 	}
 # function definition with one parameter with  Doxygen documentation
 snippet dfun1
-	/*! \brief ${1:Brief function description here}
+	/**
+	 * @brief ${1:Brief function description here}
 	 *
 	 *  ${2:Detailed description of the function}
 	 *
-	 * \param $3 ${4:Parameter description}
-	 * \return ${5:Return parameter description}
+	 * @param $3 ${4:Parameter description}
+	 * @return ${5:Return parameter description}
 	 */
 	${6:void} ${7:function_name}(${8:Type} ${3:Parameter})
 	{
@@ -207,13 +209,14 @@ snippet fun2
 	}
 # function definition with two parameters with  Doxygen documentation
 snippet dfun2
-	/*! \brief ${1:Brief function description here}
+	/**
+	 * @brief ${1:Brief function description here}
 	 *
 	 *  ${2:Detailed description of the function}
 	 *
-	 * \param $3 ${4:Parameter description}
-	 * \param $5 ${6:Parameter description}
-	 * \return ${7:Return parameter description}
+	 * @param $3 ${4:Parameter description}
+	 * @param $5 ${6:Parameter description}
+	 * @return ${7:Return parameter description}
 	 */
 	${8:void} ${9:function_name}(${10:Type} ${3:Parameter}, ${11:Type} ${5:Parameter})
 	{
@@ -227,14 +230,15 @@ snippet fun3
 	}
 # function definition with two parameters with  Doxygen documentation
 snippet dfun3
-	/*! \brief ${1:Brief function description here}
+	/**
+	 * @brief ${1:Brief function description here}
 	 *
 	 *  ${2:Detailed description of the function}
 	 *
-	 * \param $3 ${4:Parameter description}
-	 * \param $5 ${6:Parameter description}
-	 * \param $7 ${8:Parameter description}
-	 * \return ${9:Return parameter description}
+	 * @param $3 ${4:Parameter description}
+	 * @param $5 ${6:Parameter description}
+	 * @param $7 ${8:Parameter description}
+	 * @return ${9:Return parameter description}
 	 */
 	${10:void} ${11:function_name}(${12:Type} ${3:Parameter}, ${13:Type} ${5:Parameter}, ${14:Type} ${7:Parameter})
 	{
@@ -250,18 +254,20 @@ snippet td
 	typedef ${1:int} ${2:MyCustomType};
 # struct
 snippet st
-	/*! \struct $1
-	 *  \brief ${3:Brief struct description}
+	/**
+	 * @struct $1
+	 * @brief ${3:Brief struct description}
 	 *
-	 *  ${4:Detailed description}
+	 * ${4:Detailed description}
 	 */
 	struct ${1:`vim_snippets#Filename('$1_t', 'name')`} {
 		${2:Data} /*!< ${4:Description} */
 	}${5: /* optional variable list */};
 # typedef struct
 snippet tds
-	/*! \struct $2
-	 *  \brief ${5:Brief struct description}
+	/**
+	 * @struct $2
+	 * @brief ${5:Brief struct description}
 	 *
 	 *  ${6:Detailed description}
 	 */
@@ -270,14 +276,16 @@ snippet tds
 	} ${1:`vim_snippets#Filename('$1_t', 'name')`};
 
 snippet enum
-	/*! \enum $1
+	/**
+	 * @enum $1
 	 *
 	 *  ${2:Detailed description}
 	 */
 	enum ${1:name} { ${0} };
 # typedef enum
 snippet tde
-	/*! \enum $2
+	/**
+	 * @enum $2
 	 *
 	 *  ${4:Detailed description}
 	 */
@@ -300,7 +308,7 @@ snippet prx
 	printf("${1:} = %${2}\n", $1);
 # getopt
 snippet getopt
-	int         $1;
+	int $1;
 
 	/* const char  *optstr = " ??? " */
 	while((ch = getopt(argc, argv, optstr)) != -1) {
@@ -316,14 +324,17 @@ snippet getopt
 				break;
 	    }
 	}
+
 ##
 # TODO section
 snippet todo
-	/*! TODO: ${1:Todo description here}
-	 *  \todo $1
+	/**
+	 * TODO : ${1:Todo description here}
+	 *  @todo $1
 	 */
 ## Miscellaneous
 # This is kind of convenient
 snippet .
 	[${1}]
-
+snippet ,
+	{${1}}
