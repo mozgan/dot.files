@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# $Id: dot.shell/bash/bashrc,v 0.3.5 09.07.2021 19:55:14 mozgan Exp $
+# $Id: dot.shell/bash/bashrc,v 0.3.6 09.04.2022 12:34:43 mozgan Exp $
 #
 
 [ "$BASHRC" == "true" ] && return;
@@ -159,8 +159,6 @@ bash_prompt()
         _default_prompt
     fi
 }
-
-export LD_LIBRARY_PATH=/usr/local/lib/
 
 bash_prompt;
 
