@@ -2,7 +2,7 @@
 "                           Plugins
 "
 "
-" $Id: dot.vim/vimrcs/plugins.vim,v 0.8.1 09.07.2021 21:27:47 mozgan Exp $
+" $Id: dot.vim/vimrcs/plugins.vim,v 0.9 08.04.2022 22:34:21 mozgan Exp $
 "------------------------------------------------------------------------------
 
 "------------------------------------------------------------------------------
@@ -55,46 +55,40 @@ Plugin 'sjl/gundo.vim'
 " syntastic
 Plugin 'vim-syntastic/syntastic'
 
-" GitGutter
-"Plugin 'airblade/vim-gitgutter'
-
 " signify
 Plugin 'mhinz/vim-signify'
 
 " Programming Plugins
 "Plugin 'WolfgangMehner/vim-plugins'
-Plugin 'WolfgangMehner/c-support'
+"Plugin 'WolfgangMehner/c-support'
 Plugin 'WolfgangMehner/python-support'
 Plugin 'WolfgangMehner/bash-support'
-Plugin 'WolfgangMehner/latex-support'
+"Plugin 'WolfgangMehner/latex-support'
 Plugin 'WolfgangMehner/matlab-support'
-Plugin 'WolfgangMehner/perl-support'
+"Plugin 'WolfgangMehner/perl-support'
 Plugin 'WolfgangMehner/vim-support'
 Plugin 'WolfgangMehner/git-support'
 
 "Plugin 'vim-scripts/LaTeX-Suite-aka-Vim-LaTeX'
-Plugin 'vim-latex/vim-latex'
+"Plugin 'vim-latex/vim-latex'
 
 " autocomplete pairs
 Plugin 'jiangmiao/auto-pairs'
+Plugin 'luochen1990/rainbow'
 
 " linux kernel coding style
 "Plugin 'vivien/vim-linux-coding-style'
 
-" Vim-Do
-"Plugin 'WolfgangMehner/vim-do'
-
 " snippets
-"Plugin 'msanders/snipmate.vim'  " -> too old
 Plugin 'MarcWeber/vim-addon-mw-utils'
 Plugin 'tomtom/tlib_vim'
 Plugin 'garbas/vim-snipmate'
 
 " Optional:
 Plugin 'honza/vim-snippets'
-" Optional: Nedd Python support in Vim
-"Plugin 'MarcWeber/vim-addon-manager'
-"Plugin 'honza/vim-snippets'
+
+" Optional: Need Python support in Vim
+Plugin 'MarcWeber/vim-addon-manager'
 
 " some toolkits
 Plugin 'vim-scripts/DoxygenToolkit.vim'
@@ -110,17 +104,45 @@ Plugin 'yggdroot/indentline'
 "kynan/dokuvimki
 "nblock/vim-dokuwiki
 
+" Auto completion
+Plugin 'Shougo/deoplete.nvim'
+Plugin 'wokalski/autocomplete-flow'
+
+" For func argument completion
+"Plugin 'Shougo/neosnippet'
+"Plugin 'Shougo/neosnippet-snippets'
+
+Plugin 'roxma/nvim-yarp'
+Plugin 'roxma/vim-hug-neovim-rpc'
+
+" clang google code formatting
+"Plugin 'rhysd/vim-clang-format'
+"Plugin 'kana/vim-operator-user'
+
+Plugin 'google/vim-codefmt'
+Plugin 'google/vim-maktaba'
+Plugin 'google/vim-glaive'
+
 " === === === PluginInstall === === === "
 if vundleInstalled == 1
      :PluginInstall
 
-    if filereadable(expand("$HOME/.vim/snippets/my.c.comments.template"))
-		:silent !cp "$HOME/.vim/snippets/my.c.comments.template" "$HOME/.vim/bundle/c-support/c-support/templates/c.comments.template"
-	endif
-
+"    if filereadable(expand("$HOME/.vim/snippets/my.c.comments.template"))
+"		:silent !cp "$HOME/.vim/snippets/my.c.comments.template" "$HOME/.vim/bundle/c-support/c-support/templates"/c.comments.template"
+"	endif
+"
 	if filereadable(expand("$HOME/.vim/snippets/my.c.snippets"))
 		:silent !cp "$HOME/.vim/snippets/my.c.snippets" "$HOME/.vim/bundle/vim-snippets/snippets/c.snippets"
 	endif
+
+"    if filereadable(expand("$HOME/.vim/snippets/my.cpp.comments.template"))
+"		:silent !cp "$HOME/.vim/snippets/my.cpp.comments.template" "$HOME/.vim/bundle/c-support/c-support/"templates/cpp.comments.template"
+"	endif
+"
+	if filereadable(expand("$HOME/.vim/snippets/my.cpp.snippets"))
+		:silent !cp "$HOME/.vim/snippets/my.cpp.snippets" "$HOME/.vim/bundle/vim-snippets/snippets/cpp.snippets"
+	endif
+
 endif
 
 call vundle#end()
@@ -157,6 +179,7 @@ let g:solarized_contrast='high'
 " {{{   4) NERDTree
 
 " Open NERDTree automatically when vim starts up if no files were specified
+set rtp+=~/.vim/bundle/nerdtree
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 
@@ -295,6 +318,10 @@ let g:airline_theme = 'gruvbox'
 "------------------------------------------------------------------------------
 " {{{   6) Gundo
 
+if has('python3')
+    let g:gundo_prefer_python3 = 1
+endif
+
 " Toggle gundo (Ctrl-g)
 map <C-g> :GundoToggle<CR>
 
@@ -302,6 +329,13 @@ map <C-g> :GundoToggle<CR>
 
 "------------------------------------------------------------------------------
 " {{{   7) Syntastic
+
+let g:syntastic_cpp_compiler_options = '-std=c++17'
+let g:syntastic_cpp_checkers = ['cpplint']
+let g:syntastic_c_checkers = ['cpplint']
+let g:syntastic_cpp_cpplint_exec = 'cpplint'
+
+"let g:syntastic_python_checkers = ['pylint']
 
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 0
@@ -321,14 +355,11 @@ let g:syntastic_warning_symbol = "!"
 " Error and Warning messages format for statusline
 let g:syntastic_stl_format = '[%E{Err: %fe #%e}%B{, }%W{Warn: %fw #%w}]'
 
-"set statusline+=%#warningmsg#
-"set statusline+=%{SyntasticStatuslineFlag()}
-"set statusline+=%*
-
-"let g:syntastic_python_checkers = ['pylint']
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
 
 " }}}
-
 
 "------------------------------------------------------------------------------
 " {{{   8) indentline
@@ -340,21 +371,7 @@ let g:syntastic_stl_format = '[%E{Err: %fe #%e}%B{, }%W{Warn: %fw #%w}]'
 " }}}
 
 "-------------------------------------------------------
-" {{{   9) LaTeX-Suite
-"let g:tex_indent_items=1
-let g:tex_flavor='latex'
-
-au BufEnter *.tex set autowrite formatoptions=tcroqn21
-let g:Tex_DefaultTargetFormat = 'pdf'
-let g:Tex_MultipleCompileFormats = 'pdf'
-let g:Tex_CompileRule_pdf = 'pdflatex -interaction=nonstopmode $*'
-let g:Tex_GotoError = 0
-let g:Tex_ViewRule_pdf = 'evince'
-
-" }}}
-
-"-------------------------------------------------------
-" {{{   10) DoxygenToolkit
+" {{{   9) DoxygenToolkit
 
 "let g:DoxygenToolkit_briefTag_pre="@Synopsis  "
 "let g:DoxygenToolkit_paramTag_pre="@Param "
@@ -362,12 +379,28 @@ let g:Tex_ViewRule_pdf = 'evince'
 let g:DoxygenToolkit_authorName="M. Ozgan"
 let g:DoxygenToolkit_licenseTag="FreeBSD License"
 
+" }}}
+
 "-------------------------------------------------------
-" {{{   11) snipMate
+" {{{   10) snipMate
 
 let g:snipMate = { 'snippet_version' : 1 }
 
+" }}}
 
+"-------------------------------------------------------
+" {{{   11) deoplete.nvim
 
+" Use deoplete.
+let g:deoplete#enable_at_startup = 1
+" neosnippet
+let g:neosnippet#enable_completed_snippet = 1
 
+" }}}
 
+"-------------------------------------------------------
+" {{{   12) rainbow
+
+let g:rainbow_active = 1 "set to 0 if you want to enable it later via :RainbowToggle
+
+" }}}

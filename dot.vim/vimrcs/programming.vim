@@ -2,7 +2,7 @@
 "                           Programming
 "
 "
-" $Id: dot.vim/vimrcs/programming.vim,v 0.6 18.02.2018 08:26:28 mozgan Exp $
+" $Id: dot.vim/vimrcs/programming.vim,v 0.7 08.04.2022 22:32:10 mozgan Exp $
 "------------------------------------------------------------------------------
 
 "------------------------------------------------------------------------------
@@ -18,25 +18,34 @@ au BufEnter *.c map <C-Return> :w\|:!gcc -Wall -g -O3 -c %<CR>
 "------------------------------------------------------------------------------
 " {{{	2) C/C++
 
-autocmd BufNewFile,BufRead *.{c,cpp,cc,h} let c_C99=1
-autocmd BufNewFile,BufRead *.{c,cpp,cc,h} let c_c_vim_compatible=1
-autocmd BufNewFile,BufRead *.{c,cpp,cc,h} let c_comment_strings=1
-autocmd BufNewFile,BufRead *.{c,cpp,cc,h} let c_comment_numbers=1
-autocmd BufNewFile,BufRead *.{c,cpp,cc,h} let c_comment_types=1
-autocmd BufNewFile,BufRead *.{c,cpp,cc,h} let c_warn_nested_comments=1
-autocmd BufNewFile,BufRead *.{c,cpp,cc,h} let c_cpp_comments=1
-autocmd BufNewFile,BufRead *.{c,cpp,cc,h} let c_ansi_typedefs=1
-autocmd BufNewFile,BufRead *.{c,cpp,cc,h} let c_ansi_constants=1
-autocmd BufNewFile,BufRead *.{c,cpp,cc,h} let c_posix=1
-autocmd BufNewFile,BufRead *.{c,cpp,cc,h} let c_comment_date_time=1
-autocmd BufNewFile,BufRead *.{c,cpp,cc,h} let c_minlines=25
-autocmd BufNewFile,BufRead *.{c,cpp,cc,h} let c_C89=1
-autocmd BufNewFile,BufRead *.{c,cpp,cc,h} let c_gnu=1
-autocmd BufNewFile,BufRead *.{c,cpp,cc,h} let c_syntax_for_h=1
+autocmd BufNewFile,BufRead *.{c,h} let c_C99=1
+autocmd BufNewFile,BufRead *.{c,h} let c_c_vim_compatible=1
+autocmd BufNewFile,BufRead *.{c,h} let c_comment_strings=1
+autocmd BufNewFile,BufRead *.{c,h} let c_comment_numbers=1
+autocmd BufNewFile,BufRead *.{c,h} let c_comment_types=1
+autocmd BufNewFile,BufRead *.{c,h} let c_warn_nested_comments=1
+autocmd BufNewFile,BufRead *.{c,h} let c_cpp_comments=1
+autocmd BufNewFile,BufRead *.{c,h} let c_ansi_typedefs=1
+autocmd BufNewFile,BufRead *.{c,h} let c_ansi_constants=1
+autocmd BufNewFile,BufRead *.{c,h} let c_posix=1
+autocmd BufNewFile,BufRead *.{c,h} let c_comment_date_time=1
+autocmd BufNewFile,BufRead *.{c,h} let c_minlines=25
+autocmd BufNewFile,BufRead *.{c,h} let c_C89=1
+autocmd BufNewFile,BufRead *.{c,h} let c_gnu=1
+autocmd BufNewFile,BufRead *.{c,h} let c_syntax_for_h=1
 
 "autocmd BufNewFile,BufRead *.{c,cpp,cc,h} call FreeBSD_Style()
 "autocmd BufNewFile,BufRead *.{c,cpp,cc,h,h} call FreeBSD_Style()
 "autocmd BufNewFile,BufRead *.{c,cpp,cc,h,h} call FreeBSD_Style()
+
+autocmd BufNewFile,BufRead *.{cpp,cc,h} setlocal filetype=cpp
+
+autocmd FileType c set colorcolumn=80
+autocmd FileType cpp set colorcolumn=80
+autocmd FileType h set colorcolumn=80
+
+let g:C_UseTool_cmake    = 'yes'
+let g:C_UseTool_doxygen  = 'yes'
 
 " }}}
 
@@ -110,7 +119,6 @@ au BufEnter *.py map <C-Return> :w\|:!python %<CR>
 
 "au FileType python colorscheme desertink
 
-
 " }}}
 
 "------------------------------------------------------------------------------
@@ -157,6 +165,39 @@ endfunction
 
 autocmd BufWritePre * %s/\s\+$//e
 
+" }}}
 
+"------------------------------------------------------------------------------
+" {{{   10) google AutoFormattig
 
+""" For plugin vim-codefmt
+augroup autoformat_settings
+  autocmd FileType bzl AutoFormatBuffer buildifier
+  autocmd FileType c,cpp,proto,javascript,arduino AutoFormatBuffer clang-format
+  autocmd FileType dart AutoFormatBuffer dartfmt
+  autocmd FileType go AutoFormatBuffer gofmt
+  autocmd FileType gn AutoFormatBuffer gn
+  autocmd FileType html,css,sass,scss,less,json AutoFormatBuffer js-beautify
+  autocmd FileType java AutoFormatBuffer google-java-format
+  autocmd FileType python AutoFormatBuffer yapf
+  " Alternative: autocmd FileType python AutoFormatBuffer autopep8
+  autocmd FileType rust AutoFormatBuffer rustfmt
+  autocmd FileType vue AutoFormatBuffer prettier
+augroup END
 
+""" For plugin vim-clang-format
+"let g:clang_format#style_options = {
+"            \ "AccessModifierOffset" : -4,
+"            \ "AllowShortIfStatementsOnASingleLine" : "true",
+"            \ "AlwaysBreakTemplateDeclarations" : "true",
+"            \ "Standard" : "C++17"}
+"
+"" map to <Leader>cf in C++ code
+"autocmd FileType c,cpp,objc nnoremap <buffer><Leader>cf :<C-u>ClangFormat<CR>
+"autocmd FileType c,cpp,objc vnoremap <buffer><Leader>cf :ClangFormat<CR>
+"" if you install vim-operator-user
+"autocmd FileType c,cpp,objc map <buffer><Leader>x <Plug>(operator-clang-format)
+"" Toggle auto formatting:
+"nmap <Leader>C :ClangFormatAutoToggle<CR>
+
+" }}}
