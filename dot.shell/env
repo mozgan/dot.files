@@ -1,9 +1,9 @@
 #!/bin/sh
 #
-# $Id: dot.shell/env,v 0.2.3 09.07.2021 19:55:14 mozgan Exp $
+# $Id: dot.shell/env,v 0.2.3 09.04.2022 12:34:43 mozgan Exp $
 #
 
-[ "$ENV" == "true" ] && return;
+[[ "$ENV" == "true" ]] && return;
 ENV=true
 
 # Operating System
@@ -16,7 +16,7 @@ add_manpath()
 {
     [ $# -eq 0 ] && return;
 
-    [ -d "${1}" ] && if [ ":$MANPATH:" != *":${1}:"* ];
+    [ -d "${1}" ] && if [[ ":$MANPATH:" != *":${1}:"* ]];
     then
         MANPATH="${MANPATH:+"$MANPATH:"}${1}"
     fi
@@ -41,7 +41,7 @@ add_path()
 {
     [ $# -eq 0 ] && return;
 
-    [ -d "${1}" ] && if [ ":$PATH:" != *":${1}:"* ];
+    [ -d "${1}" ] && if [[ ":$PATH:" != *":${1}:"* ]];
     then
         PATH="${PATH:+"$PATH:"}${1}"
     fi
@@ -90,4 +90,6 @@ add_path "/usr/local/sbin"
 add_path "/usr/libexec"
 
 export PATH
+
+export LD_LIBRARY_PATH=/usr/local/lib/
 
