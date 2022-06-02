@@ -9,7 +9,8 @@ CLEAR_FILES="   .DS_Store \
                 Thumbs.db \
                 *~        \
                 .*~       \
-                __MACOSX  "
+                __MACOSX  \
+                _bulild   "
 
 for f in $CLEAR_FILES; do
 	find . -name "${f}" -print -exec rm -rf {} \;
